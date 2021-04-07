@@ -5,6 +5,9 @@ const ctx = canvas.getContext("2d");
 const backgroundImg = new Image();
 backgroundImg.src = "./images/BG1.png";
 
+const groundImg = new Image();
+groundImg.src = "./images/DesertTileset/png/Tile/";
+
 const playerImgRun1 = new Image();
 playerImgRun1.src = "./images/llama1.png";
 const playerImgRun2 = new Image();
@@ -21,16 +24,35 @@ playerJump2.src = "./images/llama2.png";
 const playerJump3 = new Image();
 playerJump3.src = "./images/llama3.png";
 
-const cactus = new Image();
-cactus.src = "./images/DesertTileset/png/Objects/Cactus1.png";
+const cactus1 = new Image();
+cactus1.src = "./images/DesertTileset/png/Objects/Cactus1.png";
+
+const cactus2 = new Image();
+cactus2.src = "./images/DesertTileset/png/Objects/Cactus2.png";
+
+const cactus3 = new Image();
+cactus3.src = "./images/DesertTileset/png/Objects/Cactus3.png";
+
+const gameOverImg = new Image();
+gameOverImg.src = "./images/gameOverBlack.png";
 
 const gameSound = new Audio();
 gameSound.src = "./sound/Loop.wav";
-gameSound.volume = 0.5;
+gameSound.volume = 0.1;
+
+const gameFullSound = new Audio();
+gameFullSound.src = "./sound/full.mp3";
+gameFullSound.volume = 0.1;
+gameFullSound.play();
+gameSound.loop = true;
+
+const gameOverSound = new Audio();
+gameOverSound.src = "./sound/end.mp3";
+gameOverSound.volume = 0.1;
 
 const jumpSound = new Audio();
-jumpSound.src = "./sound/end.mp3";
-jumpSound.volume = 0.5;
+jumpSound.src = "./sound/jump.mp3";
+jumpSound.volume = 0.1;
 
 let createdObstacles = [];
 
@@ -44,12 +66,14 @@ let score = 0;
 
 let gaming = false;
 
+let cactus = [cactus1, cactus2, cactus3];
+
 function createObstacles() {
   frames += 1;
   let random = Math.floor(Math.random() * 3) + 1;
   if (frames % (random * 70) === 0) {
     createdObstacles.push(
-      new Obstacle(canvas.width, canvas.height - 66, 40, 40)
+      new Obstacle(canvas.width, canvas.height - 60, 50, 50, cactus[random - 1])
     );
   }
 }
@@ -62,7 +86,7 @@ function moveObstacles() {
 }
 
 class Obstacle {
-  constructor(x, y, width, height, obstacles) {
+  constructor(x, y, width, height, cactus) {
     this.x = x;
     this.y = y;
     this.width = width;
@@ -124,15 +148,15 @@ class Game {
     this.backgroundImg.move();
     this.backgroundImg.draw();
 
-    // this.playerImgRun1.gravity();
+    this.playerImgRun1.gravity();
 
-    // this.playerImgRun1.move();
-    // this.playerImgRun1.draw();
+    this.playerImgRun1.move();
+    this.playerImgRun1.draw();
 
     createObstacles();
     moveObstacles();
 
-    // this.updateScore(this.score);
+    this.updateScore(this.score);
 
     this.animationId = requestAnimationFrame(this.updateGame);
 
@@ -143,7 +167,7 @@ class Game {
     if (this.animationId % 10 === 0) {
       score += 1;
     }
-    // this.ctx.fillStyle = "white";
+    this.ctx.fillStyle = "white";
     this.ctx.font = "20px Arial";
     this.ctx.fillText(`Score: ${score}`, canvas.width - 120, 50);
   }
@@ -155,15 +179,17 @@ class Game {
     if (crashed) {
       cancelAnimationFrame(this.animationId);
       gameSound.pause();
+      gameOverSound.play();
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
       this.ctx.fillStyle = "black";
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-      this.ctx.fillStyle = "red";
-      this.ctx.font = "100px Arial";
-      this.ctx.fillText(`Game Over`, 120, 200);
+      // this.ctx.fillStyle = "red";
+      // this.ctx.font = "100px Arial";
+      // this.ctx.fillText(`Game Over`, 120, 200);
       this.ctx.fillStyle = "white";
-      this.ctx.font = "40px Arial";
-      this.ctx.fillText(`Your score: ${score}`, 220, 280);
+      this.ctx.font = "35px Jokerman";
+      this.ctx.fillText(`Your score: ${score}`, 180, 380);
+      this.ctx.drawImage(gameOverImg, 0, 100, 650, 216);
     }
   }
 }
@@ -185,6 +211,7 @@ class Background {
 
   draw() {
     ctx.drawImage(this.backgroundImg, this.x, 0, this.width, this.height);
+
     if (this.speed < 0) {
       ctx.drawImage(
         this.backgroundImg,
@@ -259,10 +286,10 @@ class Player {
   gravity() {
     this.speedY += 0.3;
     this.y += this.speedY;
-    this.speedY *= 0.9;
+    this.speedY *= 0.92;
 
-    if (this.y > canvas.height - 120) {
-      this.y = canvas.height - 120;
+    if (this.y > canvas.height - 70) {
+      this.y = canvas.height - 70;
       this.speedY = 0;
       jumpCount = 2;
       this.jumping = false;
@@ -312,11 +339,11 @@ window.addEventListener("load", () => {
     score = 0;
     const game = new Game(
       new Background(0, 0, canvas.width, canvas.height),
-      //   new Player(canvas.width - 630, canvas.height - 120, 70, 100),
+      new Player(canvas.width - 620, canvas.height - 60, 50, 60),
       canvas,
       ctx
     );
-
+    gameFullSound.pause();
     gameSound.play();
     gameSound.loop = true;
 
@@ -324,8 +351,8 @@ window.addEventListener("load", () => {
 
     document.addEventListener("keydown", (event) => {
       if (jumpCount <= 2 && jumpCount > 0) {
-        console.log("oi");
-        if (event.key === "w") {
+        console.log("llama up");
+        if (event.key === " ") {
           game.playerImgRun1.jump(18);
           jumpCount--;
           jumpSound.play();
@@ -340,7 +367,7 @@ window.addEventListener("load", () => {
       btnStart.blur(); // blur tira o foco do botão start
     } else {
       window.location.reload();
-      console.log("kkk");
+      console.log("test");
     }
   });
 });
