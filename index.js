@@ -5,8 +5,8 @@ const ctx = canvas.getContext("2d");
 const backgroundImg = new Image();
 backgroundImg.src = "./images/BG2.png";
 
-const groundImg = new Image();
-groundImg.src = "./images/DesertTileset/png/Tile/";
+// const groundImg = new Image();
+// groundImg.src = "./images/DesertTileset/png/Tile/";
 
 const playerImgRun1 = new Image();
 playerImgRun1.src = "./images/llama1.png";
@@ -66,14 +66,14 @@ let score = 0;
 
 let gaming = false;
 
-let cactus = [cactus1, cactus2, cactus3];
+let cactus = [cactus1, cactus2, cactus3]; //array de cactus
 
 function createObstacles() {
   frames += 1;
   let random = Math.floor(Math.random() * 3) + 1;
   if (frames % (random * 70) === 0) {
     createdObstacles.push(
-      new Obstacle(canvas.width, canvas.height - 80, 50, 50, cactus[random - 1])
+      new Obstacle(canvas.width, canvas.height - 80, 50, 50, cactus[random - 1]) // random-1 escolhe aleatoriamente pela posicao do index da array de cactus
     );
   }
 }
@@ -364,7 +364,7 @@ window.addEventListener("load", () => {
   btnStart.addEventListener("click", () => {
     if (gaming === false) {
       startGame();
-      btnStart.blur(); // blur tira o foco do botão start
+      btnStart.blur();
     } else {
       window.location.reload();
       console.log("test");
