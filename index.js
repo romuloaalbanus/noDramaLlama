@@ -3,7 +3,7 @@ const canvas = document.getElementById("canvas");
 const ctx = canvas.getContext("2d");
 
 const backgroundImg = new Image();
-backgroundImg.src = "./images/BG1.png";
+backgroundImg.src = "./images/BG2.png";
 
 const groundImg = new Image();
 groundImg.src = "./images/DesertTileset/png/Tile/";
@@ -73,7 +73,7 @@ function createObstacles() {
   let random = Math.floor(Math.random() * 3) + 1;
   if (frames % (random * 70) === 0) {
     createdObstacles.push(
-      new Obstacle(canvas.width, canvas.height - 60, 50, 50, cactus[random - 1])
+      new Obstacle(canvas.width, canvas.height - 80, 50, 50, cactus[random - 1])
     );
   }
 }
@@ -286,10 +286,10 @@ class Player {
   gravity() {
     this.speedY += 0.3;
     this.y += this.speedY;
-    this.speedY *= 0.92;
+    this.speedY *= 0.9;
 
-    if (this.y > canvas.height - 70) {
-      this.y = canvas.height - 70;
+    if (this.y > canvas.height - 90) {
+      this.y = canvas.height - 90;
       this.speedY = 0;
       jumpCount = 2;
       this.jumping = false;
