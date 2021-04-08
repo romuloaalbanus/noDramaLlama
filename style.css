@@ -1,6 +1,6 @@
-@import url(//db.onlinewebfonts.com/c/54b9af0b935475d59a4bc1f6cdad764b?family=Jokerman);
+@import url("https://fonts.googleapis.com/css2?family=Frijole&display=swap");
 * {
-  font-family: "Jokerman";
+  font-family: "Frijole", cursive;
 }
 
 body {
