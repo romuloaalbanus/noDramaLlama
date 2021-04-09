@@ -66,14 +66,14 @@ let score = 0;
 
 let gaming = false;
 
-let cactus = [cactus1, cactus2, cactus3];
+let cactus = [cactus1, cactus2, cactus3]; //array cactus
 
 function createObstacles() {
   frames += 1;
   let random = Math.floor(Math.random() * 3) + 1;
   if (frames % (random * 70) === 0) {
     createdObstacles.push(
-      new Obstacle(canvas.width, canvas.height - 80, 50, 50, cactus[random - 1])
+      new Obstacle(canvas.width, canvas.height - 80, 50, 50, cactus[random - 1]) // escolhe pelo index aleatoriamente
     );
   }
 }
@@ -167,8 +167,8 @@ class Game {
     if (this.animationId % 10 === 0) {
       score += 1;
     }
-    this.ctx.fillStyle = "white";
-    this.ctx.font = "20px Arial";
+    this.ctx.fillStyle = "black";
+    this.ctx.font = "20px Chelsea Market";
     this.ctx.fillText(`Score: ${score}`, canvas.width - 120, 50);
   }
 
@@ -181,13 +181,10 @@ class Game {
       gameSound.pause();
       gameOverSound.play();
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.ctx.fillStyle = "black";
+      this.ctx.fillStyle = "black"; //background gameOver
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
-      // this.ctx.fillStyle = "red";
-      // this.ctx.font = "100px Arial";
-      // this.ctx.fillText(`Game Over`, 120, 200);
-      this.ctx.fillStyle = "white";
-      this.ctx.font = "35px Jokerman";
+      this.ctx.fillStyle = "white"; //texto gameOver
+      this.ctx.font = "35px Chelsea Market";
       this.ctx.fillText(`Your score: ${score}`, 180, 380);
       this.ctx.drawImage(gameOverImg, 0, 100, 650, 216);
     }
@@ -339,7 +336,7 @@ window.addEventListener("load", () => {
     score = 0;
     const game = new Game(
       new Background(0, 0, canvas.width, canvas.height),
-      new Player(canvas.width - 620, canvas.height - 60, 50, 60),
+      new Player(canvas.width - 620, canvas.height - 60, 50, 60), // player position and size
       canvas,
       ctx
     );
@@ -353,6 +350,7 @@ window.addEventListener("load", () => {
       if (jumpCount <= 2 && jumpCount > 0) {
         console.log("llama up");
         if (event.key === " ") {
+          //spacebar
           game.playerImgRun1.jump(18);
           jumpCount--;
           jumpSound.play();
@@ -364,10 +362,9 @@ window.addEventListener("load", () => {
   btnStart.addEventListener("click", () => {
     if (gaming === false) {
       startGame();
-      btnStart.blur(); // blur tira o foco do botão start
+      btnStart.blur();
     } else {
       window.location.reload();
-      console.log("test");
     }
   });
 });
