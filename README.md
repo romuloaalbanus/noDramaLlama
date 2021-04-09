@@ -12,6 +12,8 @@ Be careful not to find any distracted cactus on the way 🤪
 <br>
 <br>
 You can play it [here](https://romuloaalbanus.github.io/noDramaLlama/)!
+<br>
+<br>
 🌵 This game is compatible only on your computer. It is not available for smartphones yet.
 <br>
 <br>
