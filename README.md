@@ -18,6 +18,7 @@ You can play it [here](https://romuloaalbanus.github.io/noDramaLlama/)!
 --NO LLAMA WAS HARMED IN THE MAKING OF THIS GAME--
 <br>
 <br>
+
 # GAME INSTRUCTIONS
 
 -   Click  **START**  to play
@@ -28,14 +29,18 @@ You can play it [here](https://romuloaalbanus.github.io/noDramaLlama/)!
 
 <br>
 <br>
+
 # ABOUT THE AUTHOR
+
 🎮 Game by [Romulo Albanus](https://github.com/romuloaalbanus)
 <br>
 <br>
 🎼Soundtrack by [Robert Colt](https://www.instagram.com/robertcolt96/)
 <br>
 <br>
+
 # PRESENTATION
+
 💬[Google Slides](https://docs.google.com/presentation/d/1UaX1snOWgbpMybT67W8Jyq65CPiHJF5W7bw2quKUwxc/edit?usp=sharing)
 
 
