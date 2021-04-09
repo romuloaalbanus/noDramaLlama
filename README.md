@@ -24,8 +24,8 @@ You can play it [here](https://romuloaalbanus.github.io/noDramaLlama/)!
 # GAME INSTRUCTIONS
 
 -   Click  **START**  to play
--   Use  **SPACEBAR**  to JUMP the cactus
--   If the Llama touch the cactus, you  **LOSE**
+-   Use  **SPACEBAR**  to jump over the cactus
+-   If the Llama touches the cactus, you  **LOSE**
 -   If you lost, click  **START**  to play again!
 -   The game contains originals sound effects
 
