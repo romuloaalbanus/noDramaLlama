@@ -167,8 +167,8 @@ class Game {
     if (this.animationId % 10 === 0) {
       score += 1;
     }
-    this.ctx.fillStyle = "white";
-    this.ctx.font = "20px Frijole";
+    this.ctx.fillStyle = "Black";
+    this.ctx.font = "20px Chelsea Market";
     this.ctx.fillText(`Score: ${score}`, canvas.width - 120, 50);
   }
 
@@ -181,13 +181,13 @@ class Game {
       gameSound.pause();
       gameOverSound.play();
       this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
-      this.ctx.fillStyle = "black";
+      this.ctx.fillStyle = "Black";
       this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
       // this.ctx.fillStyle = "red";
-      // this.ctx.font = "100px Frijole";
+      // this.ctx.font = "100px Chelsea Market";
       // this.ctx.fillText(`Game Over`, 120, 200);
-      this.ctx.fillStyle = "white";
-      this.ctx.font = "35px Frijole";
+      this.ctx.fillStyle = "White";
+      this.ctx.font = "35px Chelsea Market";
       this.ctx.fillText(`Your score: ${score}`, 180, 380);
       this.ctx.drawImage(gameOverImg, 0, 100, 650, 216);
     }
