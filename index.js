@@ -14,6 +14,10 @@ const CONFIG = {
   SPAWN_MAX_EXTRA: 140,
   OBSTACLE_Y_OFFSET: 80,
   PLAYER_FLOOR_OFFSET: 90,
+  SPEED_INCREMENT: 1.5,
+  SPAWN_REDUCTION: 10,
+  MIN_SPAWN_INTERVAL: 35,
+  LEVEL_THRESHOLD: 20,
 };
 
 function loadImage(src) {
@@ -167,8 +171,8 @@ class Obstacle {
     this.height = 50;
   }
 
-  update() {
-    this.x += CONFIG.OBSTACLE_SPEED;
+  update(speed = CONFIG.OBSTACLE_SPEED) {
+    this.x += speed;
     this.draw();
   }
 
@@ -188,6 +192,7 @@ class Game {
     this.ctx = ctx;
     this.frames = 0;
     this.score = 0;
+    this.highScore = parseInt(localStorage.getItem('noDramaLlama_highScore') || '0');
     this.animationId = null;
     this.obstacles = [];
     this.background = new Background(canvas, ctx);
@@ -220,17 +225,30 @@ class Game {
     this.animationId = requestAnimationFrame(this.update);
   };
 
+  get level() {
+    return Math.floor(this.score / CONFIG.LEVEL_THRESHOLD) + 1;
+  }
+
+  get currentSpeed() {
+    return CONFIG.OBSTACLE_SPEED - (this.level - 1) * CONFIG.SPEED_INCREMENT;
+  }
+
+  get currentSpawnMin() {
+    return Math.max(CONFIG.MIN_SPAWN_INTERVAL, CONFIG.SPAWN_MIN_INTERVAL - (this.level - 1) * CONFIG.SPAWN_REDUCTION);
+  }
+
   spawnObstacle() {
     if (this.frames >= this.nextSpawn) {
       const spriteIndex = Math.floor(Math.random() * 3);
       this.obstacles.push(new Obstacle(this.canvas, this.ctx, spriteIndex));
-      this.nextSpawn = this.frames + CONFIG.SPAWN_MIN_INTERVAL + Math.floor(Math.random() * CONFIG.SPAWN_MAX_EXTRA);
+      this.nextSpawn = this.frames + this.currentSpawnMin + Math.floor(Math.random() * CONFIG.SPAWN_MAX_EXTRA);
     }
   }
 
   updateObstacles() {
+    const speed = this.currentSpeed;
     for (const obs of this.obstacles) {
-      obs.update();
+      obs.update(speed);
     }
     this.obstacles = this.obstacles.filter(obs => obs.right() > 0);
   }
@@ -241,7 +259,9 @@ class Game {
     }
     this.ctx.fillStyle = 'black';
     this.ctx.font = '20px Chelsea Market';
-    this.ctx.fillText(`Score: ${this.score}`, this.canvas.width - 120, 50);
+    this.ctx.fillText(`Score: ${this.score}`, this.canvas.width - 120, 30);
+    this.ctx.fillText(`Best: ${this.highScore}`, this.canvas.width - 120, 55);
+    this.ctx.fillText(`Level: ${this.level}`, 20, 30);
   }
 
   checkCollision() {
@@ -252,12 +272,27 @@ class Game {
     cancelAnimationFrame(this.animationId);
     sounds.game.pause();
     sounds.gameOver.play();
+
+    const isNewRecord = this.score > this.highScore;
+    if (isNewRecord) {
+      localStorage.setItem('noDramaLlama_highScore', this.score);
+    }
+
     this.ctx.fillStyle = 'black';
     this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
+    this.ctx.drawImage(images.gameOver, 0, 100, 650, 216);
     this.ctx.fillStyle = 'white';
     this.ctx.font = '35px Chelsea Market';
-    this.ctx.fillText(`Your score: ${this.score}`, 180, 380);
-    this.ctx.drawImage(images.gameOver, 0, 100, 650, 216);
+    this.ctx.fillText(`Score: ${this.score}  |  Level: ${this.level}`, 150, 370);
+    if (isNewRecord) {
+      this.ctx.fillStyle = '#f5c542';
+      this.ctx.font = '22px Chelsea Market';
+      this.ctx.fillText('New record!', 265, 405);
+    } else {
+      this.ctx.fillStyle = '#aaaaaa';
+      this.ctx.font = '22px Chelsea Market';
+      this.ctx.fillText(`Best: ${this.highScore}`, 280, 405);
+    }
   }
 }
 
